@@ -3,7 +3,7 @@
 site=$1
 
 site_id=$(netlify api listSites --data "{ \"name\": \"$site\" }" | jq -r '.[0].id' )
-sites=$(netlify api listSiteDeploys --data "{ \"site_id\": \"$site_id\" }" | jq '[group_by(.branch)[] | max_by(.updated_at)]' | jq -r '.[] | select(.branch != null) | "<li><a href=\"\(.deploy_url)\">\(.branch)</a> (\(.updated_at))</li>"')
+sites=$(netlify api listSiteDeploys --data "{ \"site_id\": \"$site_id\" }" | jq '[group_by(.branch)[] | max_by(.updated_at)]' | jq -r 'sort_by(.updated_at) | reverse | map(select(.branch != null) | .updated_at |= (.[:10])) | .[] | "<li><a href=\"\(.deploy_url)\">\(.branch)</a> (\(.updated_at))</li>"')
 
 echo $sites
 
