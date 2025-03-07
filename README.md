@@ -1,4 +1,6 @@
-# Wagtail UI experiments
+# [Wagtail UI experiments](https://static-wagtail-ui-experiments.netlify.app/)
+
+A lightweight website to simplify sharing of one-off UI experiments for the Wagtail CMS.
 
 Initial setup:
 
