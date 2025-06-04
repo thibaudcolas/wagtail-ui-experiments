@@ -45,4 +45,4 @@ cat <<EOF > ./$site/index.html
 </html>
 EOF
 
-netlify deploy --site $site --dir $site --prod
+netlify deploy --dir $site --prod

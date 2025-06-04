@@ -25,9 +25,13 @@ mkdir -p ./static-$alias
 echo $sessionid
 if [ -z "$sessionid" ]; then
   wget --header="X-Auto-Login: $user" --no-host-directories --content-disposition --page-requisites --mirror --level=1 -P ./static-$alias $origin$path
+  # wget --header="X-Auto-Login: $user" --no-host-directories --content-disposition --page-requisites --mirror --level=1 -P ./static-$alias $origin/admin/pages/62/edit/
+  # wget --header="X-Auto-Login: $user" --no-host-directories --content-disposition --page-requisites --mirror --level=1 -P ./static-$alias $origin/blog/wild-yeast/
+  # wget --header="X-Auto-Login: $user" --no-host-directories --content-disposition --page-requisites --mirror --level=1 -P ./static-$alias $origin/blog/bread-circuses/
 else
   domain_and_port=$(echo $origin | cut -d '/' -f3)
-  echo "$domain_and_port	FALSE	/	FALSE	1745303695	sessionid	$sessionid" > ./static-$alias/cookies.txt
+  expiry=$(date -d '+14 days' +%s)
+  echo "$domain_and_port	FALSE	/	FALSE	$expiry	sessionid	$sessionid" > ./static-$alias/cookies.txt
   wget --load-cookies ./static-$alias/cookies.txt --no-host-directories --content-disposition --page-requisites --mirror --level=1 -P ./static-$alias $origin$path
 fi
 
@@ -35,9 +39,9 @@ fi
 wget --no-host-directories --mirror --level=1 -P ./static-$alias $origin/admin/sprite/
 for i in `find static-$alias -type f -name "*\?*"`; do mv $i `echo $i | cut -d '?' -f1`; done
 
-echo "/ $path" > ./static-$alias/_redirects
+echo "/ $path" >> ./static-$alias/_redirects
 
-netlify deploy --site $site --dir static-$alias --alias $alias
+netlify deploy --dir static-$alias --alias $alias
 
 echo "https://$alias--$site.netlify.app${path}"
 echo "https://$alias--$site.netlify.app${path}" | pbcopy
