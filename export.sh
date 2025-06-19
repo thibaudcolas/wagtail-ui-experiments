@@ -30,7 +30,7 @@ if [ -z "$sessionid" ]; then
   # wget --header="X-Auto-Login: $user" --no-host-directories --content-disposition --page-requisites --mirror --level=1 -P ./static-$alias $origin/blog/bread-circuses/
 else
   domain_and_port=$(echo $origin | cut -d '/' -f3)
-  expiry=$(date -d '+14 days' +%s)
+  expiry=$(date -v '+14d' +%s)
   echo "$domain_and_port	FALSE	/	FALSE	$expiry	sessionid	$sessionid" > ./static-$alias/cookies.txt
   wget --load-cookies ./static-$alias/cookies.txt --no-host-directories --content-disposition --page-requisites --mirror --level=1 -P ./static-$alias $origin$path
 fi
